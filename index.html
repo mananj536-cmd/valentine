@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💘 Valentine?</title>
+  <style>
+    :root {
+      --bg1: #ffdde1;
+      --bg2: #ee9ca7;
+      --card: rgba(255,255,255,0.85);
+      --text: #2b2b2b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at top, var(--bg1), var(--bg2));
+      overflow: hidden;
+      color: var(--text);
+    }
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.25;
+      background-image:
+        radial-gradient(circle at 20% 30%, #fff 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 20%, #fff 0 2px, transparent 3px),
+        radial-gradient(circle at 60% 70%, #fff 0 2px, transparent 3px),
+        radial-gradient(circle at 30% 80%, #fff 0 2px, transparent 3px);
+      background-size: 220px 220px;
+      animation: float 10s linear infinite;
+    }
+    @keyframes float {
+      from { transform: translateY(0px); }
+      to   { transform: translateY(-220px); }
+    }
+
+    .card {
+      width: min(560px, 92vw);
+      background: var(--card);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+      backdrop-filter: blur(8px);
+      text-align: center;
+      position: relative;
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(24px, 4vw, 40px);
+    }
+    p {
+      margin: 0 0 18px;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .stage {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      margin-top: 10px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.55);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.12s ease, filter 0.12s ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active { transform: scale(0.98); }
+
+    #yesBtn {
+      background: #22c55e;
+      color: white;
+      box-shadow: 0 10px 20px rgba(34,197,94,0.25);
+      margin-right: 12px;
+    }
+    #yesBtn:hover { filter: brightness(1.05); }
+
+    #noBtn {
+      position: absolute;
+      left: 60%;
+      top: 55%;
+      transform: translate(-50%, -50%);
+      background: #ef4444;
+      color: white;
+      box-shadow: 0 10px 20px rgba(239,68,68,0.22);
+      touch-action: none;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 10px;
+    }
+
+    /* YES SCREEN */
+    .yes-screen {
+      display: none;
+      margin-top: 14px;
+      padding: 18px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.65);
+      font-weight: 800;
+    }
+    .yes-screen h2{
+      margin: 0 0 12px;
+      font-size: 22px;
+      letter-spacing: 0.4px;
+    }
+    .yes-screen img{
+      width: min(360px, 90%);
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+      display: block;
+      margin: 0 auto 12px;
+    }
+    .footer-line{
+      margin: 0;
+      font-size: 14px;
+      opacity: 0.85;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts"></div>
+
+  <div class="card" id="card">
+    <h1>My jaan, will you be my valentine? 💘</h1>
+    <p>Choose wisely, I’ll get you good food pakka promise 😌</p>
+
+    <div class="stage" id="stage">
+      <div class="row">
+        <button class="btn" id="yesBtn">Yes 💖</button>
+      </div>
+      <button class="btn" id="noBtn">No 🙈</button>
+    </div>
+
+    <div class="yes-screen" id="yesScreen">
+      <h2>YAYYYY ISSA DATE BABES</h2>
+      <!-- Put your GIF in the same folder as index.html and name it yes.gif -->
+      <img id="yesGif" src="yes.gif" alt="YAY GIF" />
+      <p class="footer-line">vellatime with my valentine</p>
+    </div>
+  </div>
+
+  <script>
+    const stage = document.getElementById("stage");
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const yesScreen = document.getElementById("yesScreen");
+
+    function moveNoButton() {
+      const stageRect = stage.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const padding = 12;
+      const maxX = stageRect.width - btnRect.width - padding;
+      const maxY = stageRect.height - btnRect.height - padding;
+
+      const x = Math.random() * maxX + padding;
+      const y = Math.random() * maxY + padding;
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+      noBtn.style.transform = "translate(0, 0)";
+    }
+
+    function dodgeIfClose(clientX, clientY) {
+      const btnRect = noBtn.getBoundingClientRect();
+      const btnCenterX = btnRect.left + btnRect.width / 2;
+      const btnCenterY = btnRect.top + btnRect.height / 2;
+
+      const dx = clientX - btnCenterX;
+      const dy = clientY - btnCenterY;
+      const distance = Math.hypot(dx, dy);
+
+      const triggerDistance = 120;
+      if (distance < triggerDistance) moveNoButton();
+    }
+
+    stage.addEventListener("mousemove", (e) => dodgeIfClose(e.clientX, e.clientY));
+
+    stage.addEventListener("touchmove", (e) => {
+      const t = e.touches[0];
+      if (!t) return;
+      dodgeIfClose(t.clientX, t.clientY);
+    }, { passive: true });
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveNoButton();
+    }, { passive: false });
+
+    yesBtn.addEventListener("click", () => {
+      // Hide the stage (buttons) and show the yes screen (message + gif + footer)
+      stage.style.display = "none";
+      yesScreen.style.display = "block";
+    });
+
+    noBtn.addEventListener("click", moveNoButton);
+
+    moveNoButton();
+  </script>
+</body>
+</html>
